@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-WORKDIR //tests
+WORKDIR /tests
 RUN mkdir -p /tests/roles/
 RUN apt-get update \
 && apt-get -y install python curl python-apt aptitude

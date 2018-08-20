@@ -25,6 +25,8 @@ There were a number of existing projects on Docker Hub that were really close to
 
 So, we put together our own image -- the one who's README.md you're reading right now.
 
+This image provides all of the tools we use for testing
+
 ## Details
 This Dockerfile includes:
 - aptitude
@@ -97,7 +99,7 @@ git submodule update --remote --recursive
 To run a test, use ```docker run``` with the ```ansible-playbook``` command.  Again, the reasoning is that the role to be tested will be mounted as a volume at ```/tests/roles/test```; therefore, ```docker``` should be invoked with -v putting the current working directory at /tests/roles/test so that when ```ansible-playbook``` is run, it tests the current working directory.  Consider the following:
 
 ```shell
-docker run -v $(pwd):/tests/roles/test wesleydean/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml
+docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml
 ```
 
 ### Jenkinsfile
@@ -110,7 +112,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test wesleydean/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml'
       }
     }
   }
