@@ -122,13 +122,13 @@ pipeline {
   stages {
     stage('Check') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-lint /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml'
       }
     }
 
     stage('Lint') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-lint /tests/site.yml'
       }
     }
 
