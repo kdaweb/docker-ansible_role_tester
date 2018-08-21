@@ -98,7 +98,7 @@ git submodule update --remote --recursive
 To run a test, use ```docker run``` with the ```ansible-playbook``` command.  Again, the reasoning is that the role to be tested will be mounted as a volume at ```/tests/roles/test```; therefore, ```docker``` should be invoked with -v putting the current working directory at /tests/roles/test so that when ```ansible-playbook``` is run, it tests the current working directory.  Consider the following:
 
 ```shell
-docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml
+docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester test_ansible_role.sh
 ```
 
 ## Checking for Best Practices (Lint)
@@ -109,7 +109,7 @@ https://github.com/willthames/ansible-lint
 To use playbooktester to run ansible-lint, use:
 
 ```shell
-docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester ansible-lint /tests/site.yml
+docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester lint_ansible_role.sh
 ```
 
 ## Jenkinsfile
@@ -120,20 +120,21 @@ pipeline {
   agent any
 
   stages {
-    stage('Check') {
+    stage('Test') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester test_ansible_role.sh'
       }
     }
 
     stage('Lint') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester ansible-lint /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester lint_ansible_role.sh'
       }
     }
 
   }
 }
+
 ```
 
 ## License
