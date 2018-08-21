@@ -102,9 +102,13 @@ docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester test_ansible_r
 ```
 
 ## Checking for Best Practices (Lint)
-Will Thames provides an excellent tool called "ansible-lint" which, per the project's repository, "checks playbooks for practices and behaviour that could potentially be improved."  More information about the project can be found at:
+Will Thames provides an excellent tool called "ansible-lint" which, per the project's repository, "checks playbooks for practices and behaviour that could potentially be improved."  More information about the project can be found on GitHub at:
 
-https://github.com/willthames/ansible-lint
+- https://github.com/willthames/ansible-lint
+
+Additional rules for ansible-lint are provided by Tsukinowa Inc. and are available on GitHub:
+
+- https://github.com/tsukinowasha/ansible-lint-rules
 
 To use playbooktester to run ansible-lint, use:
 
