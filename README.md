@@ -1,4 +1,4 @@
-# docker-playbooktester
+# docker-ansible_role_tester
 ## Introduction
 This tool is used to check Ansible roles using the --check flag to the ansible-playbook command.  The Dockerfile associated with this project is very simple and straight-forward -- it's based on the ':latest' Ubuntu image, adds the latest python, pip, and ansible, as well as several supporting packages (curl, python-apt, aptitude).  Additionally, it adds the Google Cloud SDK's repo so that the aforementioned can be installed and tested in --check mode.
 
@@ -98,7 +98,7 @@ git submodule update --remote --recursive
 To run a test, use ```docker run``` with the ```ansible-playbook``` command.  Again, the reasoning is that the role to be tested will be mounted as a volume at ```/tests/roles/test```; therefore, ```docker``` should be invoked with -v putting the current working directory at /tests/roles/test so that when ```ansible-playbook``` is run, it tests the current working directory.  Consider the following:
 
 ```shell
-docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml
+docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml
 ```
 
 ## Checking for Best Practices (Lint)
@@ -109,7 +109,7 @@ https://github.com/willthames/ansible-lint
 To use playbooktester to run ansible-lint, use:
 
 ```shell
-docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-lint /tests/site.yml
+docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester ansible-lint /tests/site.yml
 ```
 
 ## Jenkinsfile
@@ -122,13 +122,13 @@ pipeline {
   stages {
     stage('Check') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml'
       }
     }
 
     stage('Lint') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-lint /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/ansible_role_tester ansible-lint /tests/site.yml'
       }
     }
 
