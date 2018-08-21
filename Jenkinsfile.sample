@@ -2,15 +2,15 @@ pipeline {
   agent any
 
   stages {
-    stage('Check') {
+    stage('Test') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-playbook -i /tests/inventory --check --connection=local /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester test_ansible_role.sh'
       }
     }
 
     stage('Lint') {
       steps {
-        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester ansible-lint /tests/site.yml'
+        sh 'docker run -v $(pwd):/tests/roles/test kdaweb/playbooktester lint_ansible_role.sh'
       }
     }
 

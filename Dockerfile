@@ -2,21 +2,32 @@ FROM ubuntu:latest
 
 WORKDIR /tests
 RUN mkdir -p /tests/roles/
-RUN apt-get update \
-&& apt-get -y install python curl python-apt aptitude
 
+# pull down the latest package lists
+RUN apt-get update
+
+# install basic packages we'll need later
+RUN apt-get -fy install curl aptitude
+
+# install Python-related packages
+RUN apt-get -fy install python python-apt python-mysqldb
+
+# download and install the latest, greatest Python packages using pip
 RUN curl "https://bootstrap.pypa.io/2.6/get-pip.py" > /usr/bin/get-pip.py \
 && python /usr/bin/get-pip.py \
 && pip install pip --upgrade \
-&& pip install ansible ansible-lint --upgrade
+&& pip install  ansible ansible-lint --upgrade
 
+# add repo for installing Google Cloud SDK packages
 RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
 && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
 && apt-get update
 
-RUN echo localhost > /tests/inventory \
-&& echo "---" > /tests/site.yml \
-&& echo "- hosts: localhost" >> /tests/site.yml \
-&& echo "  remote_user: root" >> /tests/site.yml \
-&& echo "  roles:" >> /tests/site.yml \
-&& echo "    - test" >> /tests/site.yml
+# copy over our testing scaffolding and convenience scripts
+COPY test_ansible_role.sh /bin/test_ansible_role.sh
+COPY lint_ansible_role.sh /bin/lint_ansible_role.sh
+COPY inventory /tests/inventory
+COPY site.yml /tests/site.yml
+
+# make sure the convenience scripts are executable
+RUN chmod 755 /bin/test_ansible_role.sh /bin/lint_ansible_role.sh
