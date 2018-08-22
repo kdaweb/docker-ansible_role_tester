@@ -31,6 +31,7 @@ COPY test_ansible_role.sh /bin/test_ansible_role.sh
 COPY lint_ansible_role.sh /bin/lint_ansible_role.sh
 COPY inventory /tests/inventory
 COPY site.yml /tests/site.yml
+COPY ansible-lint.yml /ansible-lint.yml
 
 # make sure the convenience scripts are executable
 RUN chmod 755 /bin/test_ansible_role.sh /bin/lint_ansible_role.sh

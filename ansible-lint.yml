@@ -1,0 +1,13 @@
+exclude_paths:
+  - /tests/roles/test/meta/
+  - /tests/roles/test/files/
+  - /tests/roles/test/templates/
+
+rulesdir:
+  - /ansible_lint_rules/rules/
+
+skip_list: []
+
+use_default_rules: true
+
+parseable: true

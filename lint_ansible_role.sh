@@ -1,2 +1,2 @@
 #!/bin/bash
-ansible-lint -p -R -r /ansible_lint_rules/rules/ /tests/site.yml
+ansible-lint -c /ansible-lint.yml /tests/site.yml
